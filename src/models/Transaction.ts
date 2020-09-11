@@ -5,7 +5,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   ManyToOne,
-  JoinColumn
+  JoinColumn,
 } from 'typeorm';
 import Category from './Category';
 import { uuid } from 'uuidv4';
@@ -27,7 +27,7 @@ class Transaction {
   @Column()
   category_id: string;
 
-  @ManyToOne(()=>Category)
+  @ManyToOne(() => Category, category => category.transaction, { eager: true })
   @JoinColumn({ name: 'category_id' })
   category: Category;
 
@@ -36,7 +36,6 @@ class Transaction {
 
   @UpdateDateColumn()
   updated_at: Date;
-
 }
 
 export default Transaction;
