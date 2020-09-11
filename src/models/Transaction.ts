@@ -8,7 +8,6 @@ import {
   JoinColumn,
 } from 'typeorm';
 import Category from './Category';
-import { uuid } from 'uuidv4';
 
 @Entity('transactions')
 class Transaction {

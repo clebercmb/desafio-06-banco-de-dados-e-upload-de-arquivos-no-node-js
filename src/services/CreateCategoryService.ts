@@ -1,5 +1,5 @@
-import Category from '../models/Category';
 import { getRepository } from 'typeorm';
+import Category from '../models/Category';
 import AppError from '../errors/AppError';
 
 interface Request {
@@ -16,14 +16,12 @@ class CreateCategoryService {
       throw new AppError('Category already used');
     }
 
-    const createCategory = categoriesRepository.create({ title })
+    const createCategory = categoriesRepository.create({ title });
 
-    const category = categoriesRepository.save( createCategory);
+    const category = categoriesRepository.save(createCategory);
 
     return category;
   }
-
 }
-
 
 export default CreateCategoryService;

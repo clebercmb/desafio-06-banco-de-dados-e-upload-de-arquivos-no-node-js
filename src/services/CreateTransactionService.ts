@@ -1,9 +1,9 @@
+import { getRepository, getCustomRepository } from 'typeorm';
 import AppError from '../errors/AppError';
 
 import Transaction from '../models/Transaction';
 import TransactionsRepository from '../repositories/TransactionsRepository';
 
-import { getRepository, getCustomRepository } from 'typeorm';
 import Category from '../models/Category';
 
 import CreateCategoryService from './CreateCategoryService';
@@ -11,15 +11,20 @@ import CreateCategoryService from './CreateCategoryService';
 interface Request {
   title: string;
   value: number;
-  type: "income" | "outcome";
+  type: 'income' | 'outcome';
   category: string;
 }
 
 class CreateTransactionService {
-  public async execute({ title, value, type, category }:Request): Promise<Transaction> {
+  public async execute({
+    title,
+    value,
+    type,
+    category,
+  }: Request): Promise<Transaction> {
     // TODO()
-    if ( !(type === 'income' || type == 'outcome') )  {
-        throw new AppError(`The transaction type must be "income" or "outcome"`);
+    if (!(type === 'income' || type == 'outcome')) {
+      throw new AppError(`The transaction type must be "income" or "outcome"`);
     }
 
     if (!category) {
@@ -27,7 +32,9 @@ class CreateTransactionService {
     }
 
     const categoriesRepository = getRepository(Category);
-    let checkCategoryExist = await categoriesRepository.findOne({title: category});
+    let checkCategoryExist = await categoriesRepository.findOne({
+      title: category,
+    });
 
     if (!checkCategoryExist) {
       const createCategory = new CreateCategoryService();
@@ -43,8 +50,12 @@ class CreateTransactionService {
       );
     }
 
-
-    const createTransaction = transactionsRepository.create({ title, value, type, category_id: checkCategoryExist.id });
+    const createTransaction = transactionsRepository.create({
+      title,
+      value,
+      type,
+      category_id: checkCategoryExist.id,
+    });
 
     const transaction = transactionsRepository.save(createTransaction);
 
